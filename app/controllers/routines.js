@@ -108,7 +108,7 @@ module.exports = controller({
 }, { before: [
   { method: setUser, only: ['index', 'show'] },
   // { method: multerUpload.single('file'), only: ['create'] }, // this creates req.file
-  { method: authenticate, except: ['index', 'show'] },
+  { method: authenticate },
   { method: setModel(Routine), only: ['show'] },
   { method: setModel(Routine, { forUser: true }), only: ['update', 'destroy'] }
 ] })
