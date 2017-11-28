@@ -22,23 +22,10 @@ const index = (req, res, next) => {
 }
 
 const show = (req, res) => {
-  if (req.upload.toJSON().private === false) {
-    return res.json({
-      upload: req.upload.toJSON()
-    })
-  }
-  if (req.user === null) {
-    const resultStatusCode = 404
-    return res.status(resultStatusCode).json({})
-  }
-  if (req.upload._owner.toString() !== req.user._id.toString() && (req.upload.toJSON().private === true)) {
-    const resultStatusCode = 404
-    return res.status(resultStatusCode).json({})
-  } else {
-    return res.json({
-      upload: req.upload.toJSON()
-    })
-  }
+  console.log('this is res', res)
+  return res.json({
+    routine: req.routine.toJSON()
+  })
 }
 
 const create = (req, res, next) => {

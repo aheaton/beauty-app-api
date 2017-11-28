@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose')
 
-const uploadSchema = new mongoose.Schema({
+const routineSchema = new mongoose.Schema({
   routineType: {
     type: String,
     required: true
@@ -46,6 +46,6 @@ const uploadSchema = new mongoose.Schema({
   }
 })
 
-const Upload = mongoose.model('Upload', uploadSchema)
+const Routine = mongoose.model('Routine', routineSchema)
 
-module.exports = Upload
+module.exports = Routine
