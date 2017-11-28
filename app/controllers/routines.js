@@ -83,7 +83,7 @@ const destroy = (req, res, next) => { // remember to not let the user delete unl
     const resultStatusCode = 404
     return res.status(resultStatusCode).json({})
   } else {
-    req.upload.remove()
+    req.routine.remove()
     .then(() => res.sendStatus(204))
     .catch(next)
   }
