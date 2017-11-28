@@ -22,7 +22,6 @@ const index = (req, res, next) => {
 }
 
 const show = (req, res) => {
-  console.log('this is res', res)
   return res.json({
     routine: req.routine.toJSON()
   })
@@ -68,30 +67,34 @@ const create = (req, res, next) => {
   // .catch(next)
 
 const update = (req, res, next) => {
-  delete req.body.upload._owner  // disallow owner reassignment.
-  if (req.upload._owner.toString() !== req.user._id.toString()) {
+  delete req.body.routine._owner  // disallow owner reassignment.
+  if (req.routine._owner.toString() !== req.user._id.toString()) {
     const resultStatusCode = 404
     return res.status(resultStatusCode).json({})
   } else {
-    req.upload.update(req.body.upload)
+    req.routine.update(req.body.routine)
       .then(() => res.sendStatus(204))
       .catch(next)
   }
 }
 
-// const destroy = (req, res, next) => {
-//   req.upload.remove()
-//     .then(() => s3Destroy(req.upload._key))
-//     .then(() => res.sendStatus(204))
-//     .catch(next)
-// }
+const destroy = (req, res, next) => { // remember to not let the user delete unless they own the routine
+  if (req.routine._owner.toString() !== req.user._id.toString()) {
+    const resultStatusCode = 404
+    return res.status(resultStatusCode).json({})
+  } else {
+    req.upload.remove()
+    .then(() => res.sendStatus(204))
+    .catch(next)
+  }
+}
 
 module.exports = controller({
   index,
   show,
   create,
-  update
-  // destroy
+  update,
+  destroy
 }, { before: [
   { method: setUser, only: ['index', 'show'] },
   // { method: multerUpload.single('file'), only: ['create'] }, // this creates req.file
