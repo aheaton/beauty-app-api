@@ -1,12 +1,7 @@
 'use strict'
 
-// const multer = require('multer')
-// const multerUpload = multer({dest: '/tmp'})
-
 const controller = require('lib/wiring/controller')
 const Routine = require('app/models/routine')
-// const s3Upload = require('lib/aws-s3-upload')
-// const s3Destroy = require('lib/aws-s3-destroy')
 
 const authenticate = require('./concerns/authenticate')
 const setUser = require('./concerns/set-current-user')
@@ -38,33 +33,6 @@ const create = (req, res, next) => {
       }))
     .catch(next)
 }
-  // const file = {
-  //   path: req.file.path,
-  //   name: req.file.originalname,
-  //   mimetype: req.file.mimetype
-  // }
-  // console.log('this is the file', file)
-  // s3Upload(file)
-  // .then((s3Response) =>
-  // Routine.create({
-  //   routine_type: req.body.routine_type,
-  //   description: req.body.description,
-  //   // photoLink: req.body.photoLink,
-  //   // _url: s3Response.Location,
-  //   face_shape: req.body.face_shape,
-  //   skin_type: req.body.skin_type,
-  //   eye_color: req.body.eye_color,
-  //   process: req.body.process,
-  //   _owner: req.user._id
-  //   // _key: s3Response.Key
-  // })
-  // .then((post) => {
-  //   return res.status(201)
-  //   .json({
-  //     post: post
-  //   })
-  // })
-  // .catch(next)
 
 const update = (req, res, next) => {
   delete req.body.routine._owner  // disallow owner reassignment.
@@ -78,7 +46,7 @@ const update = (req, res, next) => {
   }
 }
 
-const destroy = (req, res, next) => { // remember to not let the user delete unless they own the routine
+const destroy = (req, res, next) => {
   if (req.routine._owner.toString() !== req.user._id.toString()) {
     const resultStatusCode = 404
     return res.status(resultStatusCode).json({})
@@ -97,7 +65,6 @@ module.exports = controller({
   destroy
 }, { before: [
   { method: setUser, only: ['index', 'show'] },
-  // { method: multerUpload.single('file'), only: ['create'] }, // this creates req.file
   { method: authenticate },
   { method: setModel(Routine), only: ['show'] },
   { method: setModel(Routine, { forUser: true }), only: ['update', 'destroy'] }
