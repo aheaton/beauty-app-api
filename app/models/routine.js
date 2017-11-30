@@ -11,6 +11,10 @@ const routineSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  photoURL: {
+    type: String,
+    required: true
+  },
   faceShape: {
     type: String,
     required: true
@@ -27,19 +31,11 @@ const routineSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  // _url: {
-  //   type: String,
-  //   required: true
-  // },
   _owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   }
-  // _key: {
-  //   type: String,
-  //   required: true
-  // }
 }, {
   timestamps: true,
   toJSON: {
